@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="spm">
+<!-- 회원가입 -->
+<insert id="register">
+	insert into SPM values 
+	(spm_seq.nextval, #{name}, #{id}, #{pw}, #{phone}, #{birth}, #{email}, #{address1}, #{address2}, #{nickname}, 0 , SYSDATE)
+</insert>
+  	<!--  아이디 중복 체크  -->
+    <select id="idCheck" parameterType="String" resultType="Integer">
+        SELECT COUNT(id) FROM SPM WHERE id= #{id}
+    </select> 
+    
+    <!--  닉네임 중복 체크  -->
+    <select id="NickCheck" parameterType="String" resultType="Integer">
+        SELECT COUNT(nickname) FROM SPM WHERE nickname= #{nickname}
+    </select> 
+    
+   <!--로그인-->
+   <select id = "login" resultType="com.sock.web.memberDto.MemberDto"  >
+   SELECT NAME FROM SPM WHERE ID = #{id} AND PW = #{pw}
+   </select>
+   
+   <select id = "viewlogin" resultType="com.sock.web.memberDto.MemberDto" >
+   SELECT * FROM SPM where ID = #{id}
+   </select>
+   
+   <!-- 로그인시 아이디와 비밀번호 확인 -->
+	<select id="loginUser" resultType="com.sock.web.memberDto.MemberDto">
+		select * from spm where id=#{id} and pw=#{pw}
+	</select>
+	
+	<select id="findId" resultType="com.sock.web.memberDto.MemberDto">
+		select * from spm where name=#{name} and email=#{email}
+	</select>
+	
+	<select id="findPw" resultType="com.sock.web.memberDto.MemberDto">
+		select * from spm where id=#{id} and name=#{name} and email=#{email}
+	</select>
+	
+	<update id="updatePw">
+		update spm set pw = #{pw} where id = #{id}
+	</update>
+	
+	<!-- 내정보 조회 -->
+	   <select id="readmypage" resultType="com.sock.web.memberDto.MemberDto">
+	   	select * from spm where ID = #{id} 
+	   </select>
+	   
+	 <!-- 내정보 수정 -->
+	 <update id="updatemypage">
+	 update spm set name = #{name}, email = #{email}, pw = #{pw}, birth = #{birth}, address1=#{address1},address2=#{address2}  where id = #{id}
+	 </update>
+	 <!-- 비밀번호체크 -->
+	 <select id="pwCheck" resultType="String">
+	select PW from spm where ID = #{id}
+	</select>
+	 <!-- 내정보 탈퇴 -->
+	 <delete id="deletemypage">
+	 	delete from spm where id = #{id} 
+	 </delete>
+	 
+
+
+<!--  <update id="keepLogin">
+UPDATE spm
+SET session_key = #{sessionId},
+session_limit = #{sessionLimit}
+WHERE id=#{id}
+</update>
+
+<select id="check" resultType="com.sock.web.memberDto.MemberDto">
+SELECT
+*
+FROM SPM
+WHERE session_key = #{value}
+</select>   -->
+	 
+</mapper>

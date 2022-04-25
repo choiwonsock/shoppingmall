@@ -1,0 +1,5 @@
+Manifest-Version: 1.0
+Built-By: ￬ﾕﾄ￫ﾱﾅ ￬ﾢﾅ￫ﾡﾜ 403_04
+Build-Jdk: 1.8.0_321
+Created-By: Maven Integration for Eclipse
+
