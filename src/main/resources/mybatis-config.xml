@@ -10,4 +10,9 @@
 		
 	</settings>
 
+	<typeAliases>
+		<typeAlias alias="MemberDto" type="com.shoppingmall.web.memberDto.MemberDto"/>
+		<typeAlias alias="itemRegisterVo" type="com.shoppingmall.web.admin.model.ItemRegisterVo"/>
+	</typeAliases>
+
 </configuration>

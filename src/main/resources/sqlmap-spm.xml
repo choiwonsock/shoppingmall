@@ -5,77 +5,130 @@
 <mapper namespace="spm">
 <!-- 회원가입 -->
 <insert id="register">
-	insert into SPM values 
+	insert into MEMBER values 
 	(spm_seq.nextval, #{name}, #{id}, #{pw}, #{phone}, #{birth}, #{email}, #{address1}, #{address2}, #{nickname}, 0 , SYSDATE)
 </insert>
   	<!--  아이디 중복 체크  -->
     <select id="idCheck" parameterType="String" resultType="Integer">
-        SELECT COUNT(id) FROM SPM WHERE id= #{id}
+        SELECT COUNT(id) FROM MEMBER WHERE id= #{id}
     </select> 
     
     <!--  닉네임 중복 체크  -->
     <select id="NickCheck" parameterType="String" resultType="Integer">
-        SELECT COUNT(nickname) FROM SPM WHERE nickname= #{nickname}
+        SELECT COUNT(nickname) FROM MEMBER WHERE nickname= #{nickname}
     </select> 
     
    <!--로그인-->
-   <select id = "login" resultType="com.sock.web.memberDto.MemberDto"  >
-   SELECT NAME FROM SPM WHERE ID = #{id} AND PW = #{pw}
+   <select id = "login" resultType="com.shoppingmall.web.memberDto.MemberDto"  >
+   SELECT NAME FROM MEMBER WHERE ID = #{id} AND PW = #{pw}
    </select>
    
-   <select id = "viewlogin" resultType="com.sock.web.memberDto.MemberDto" >
-   SELECT * FROM SPM where ID = #{id}
+   <select id = "viewlogin" resultType="com.shoppingmall.web.memberDto.MemberDto" >
+   SELECT * FROM MEMBER where ID = #{id}
    </select>
    
    <!-- 로그인시 아이디와 비밀번호 확인 -->
-	<select id="loginUser" resultType="com.sock.web.memberDto.MemberDto">
-		select * from spm where id=#{id} and pw=#{pw}
+	<select id="loginUser" resultType="com.shoppingmall.web.memberDto.MemberDto">
+		select * from MEMBER where id=#{id} and pw=#{pw}
 	</select>
 	
-	<select id="findId" resultType="com.sock.web.memberDto.MemberDto">
-		select * from spm where name=#{name} and email=#{email}
+	<select id="findId" resultType="com.shoppingmall.web.memberDto.MemberDto">
+		select * from MEMBER where name=#{name} and email=#{email}
 	</select>
 	
-	<select id="findPw" resultType="com.sock.web.memberDto.MemberDto">
-		select * from spm where id=#{id} and name=#{name} and email=#{email}
+	<select id="findPw" resultType="com.shoppingmall.web.memberDto.MemberDto">
+		select * from MEMBER where id=#{id} and name=#{name} and email=#{email}
 	</select>
 	
 	<update id="updatePw">
-		update spm set pw = #{pw} where id = #{id}
+		update MEMBER set pw = #{pw} where id = #{id}
 	</update>
 	
 	<!-- 내정보 조회 -->
-	   <select id="readmypage" resultType="com.sock.web.memberDto.MemberDto">
-	   	select * from spm where ID = #{id} 
+	   <select id="readmypage" resultType="com.shoppingmall.web.memberDto.MemberDto">
+	   	select * from MEMBER where ID = #{id} 
 	   </select>
 	   
 	 <!-- 내정보 수정 -->
 	 <update id="updatemypage">
-	 update spm set name = #{name}, email = #{email}, pw = #{pw}, birth = #{birth}, address1=#{address1},address2=#{address2}  where id = #{id}
+	 update MEMBER set name = #{name}, email = #{email}, pw = #{pw}, birth = #{birth}, address1=#{address1},address2=#{address2}  where id = #{id}
 	 </update>
 	 <!-- 비밀번호체크 -->
 	 <select id="pwCheck" resultType="String">
-	select PW from spm where ID = #{id}
+	select PW from MEMBER where ID = #{id}
 	</select>
 	 <!-- 내정보 탈퇴 -->
 	 <delete id="deletemypage">
-	 	delete from spm where id = #{id} 
+	 	delete from MEMBER where id = #{id} 
 	 </delete>
 	 
+	<!-- 기룡이형 -->
+	<select id="memberInfoAll" resultType="MemberDto">
+	select * from MEMBER order by id
+</select>
+	
+<select id="memberSearch" resultType="MemberDto">
+	select * from MEMBER where ${select} like '%'||'${search}'||'%' order by id
+</select>
 
+<delete id="memberDelete">
+	delete from MEMBER where id = '${id}' 
+</delete>
 
-<!--  <update id="keepLogin">
-UPDATE spm
-SET session_key = #{sessionId},
-session_limit = #{sessionLimit}
-WHERE id=#{id}
+<insert id="itemRegister">
+	insert into ITEM (ITEMCODE, ITEMPRICE, ITEMSIZE, ITEMNAME, ITEMDESC, ITEMQTY, ITEMCATECODE, ITEMIMAGE, ITEMTHUMBIMAGE)
+	values ('${itemCode}', ${itemPrice}, '${itemSize}', '${itemName}', '${itemDesc}', '${itemQty}', ${itemCateCode}, '${itemImage}', '${itemThumbImage}')
+</insert>
+
+<select id="itemList" resultType="itemRegisterVo">
+	select * from ITEM order by ITEMCODE
+</select>
+
+<select id="itemSearch" resultType="itemRegisterVo">
+	select * from ITEM where ${select} like '%'||'${search}'||'%' order by ITEMCODE
+</select>
+
+<update id="itemUpdate">
+	update ITEM set ITEMPRICE = ${itemPrice}, ITEMSIZE ='${itemSize}', ITEMNAME='${itemName}', ITEMDESC='${itemDesc}', ITEMQTY='${itemQty}', ITEMIMAGE='${itemImage}', ITEMTHUMBIMAGE='${itemThumbImage}' 
+		where ITEMCODE = '${itemCode}'
 </update>
 
-<select id="check" resultType="com.sock.web.memberDto.MemberDto">
-SELECT
-*
-FROM SPM
-WHERE session_key = #{value}
-</select>   -->
+<select id="itemDetail" resultType="itemRegisterVo">
+	select * from ITEM where ITEMCODE = ${itemCode}
+</select>
+
+<select id="itemName" resultType="Integer">
+	select count(*) ITEMNAME from ITEM where ITEMNAME = '${itemName}'
+</select>
+
+<delete id="itemDelete">
+	delete from ITEM where ITEMNAME = '${itemName}' 
+</delete>
+
+<select id="orderList" resultType="com.shoppingmall.web.admin.model.OrderListVo">
+ 	select * from tbl_order 
+</select>
+
+<select id="orderDetail" resultType="com.shoppingmall.web.admin.model.OrderDetailVo">
+ 	select * from tbl_order o 
+ 		inner join tbl_order_details d 
+ 			on o.orderid = d.orderid
+ 		inner join item i 
+ 			on i.itemcode = d.gdsnum
+ 			where o.orderid = '${orderId}'
+</select>
+
+<update id="orderDelivery">
+	update tbl_order set delivery = '${delivery}' where orderid = '${orderId}'  
+</update>
+
+<select id="orderQtyChange_sub" resultType="com.shoppingmall.web.admin.model.OrderDetailVo">
+ 	select gdsnum, cartstock from tbl_order_details where orderid = '${orderId}'
+</select>
+
+<update id="orderQtyChange">
+	update ITEM set ITEMQTY = ITEMQTY ${delivery} '${cartStock}' where ITEMCODE = '${gdsNum}'  
+</update>
+
 	 
 </mapper>

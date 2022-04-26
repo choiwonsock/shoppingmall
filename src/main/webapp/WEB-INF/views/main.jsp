@@ -57,7 +57,7 @@
 
 
 
-<c:if test="${loginuser != null}">     <!-- 로그인 경우 -->
+<c:if test="${loginuser != null && admin == 0 }">     <!-- 로그인 경우 -->
  <li>
   ${name}님 환영합니다.
  </li>
@@ -70,10 +70,29 @@
  <li>
  장바구니
  </li>
-  <c:if test="${admin == 1 }">
-     			<li><a href="javascript:void(0)" onClick="javascript:goPost()" >관리자 페이지</a></li>
-        </c:if>
+
 </c:if>
+  <c:if test="${loginuser != null && admin == 1 }">
+   <li>
+  ${name}님 환영합니다.
+ </li>
+ 			<li>
+     		<a href="/web/admin/memberManage">회원 관리</a>
+			</li>
+			<li>
+		<a href="/web/admin/itemReg">상품 등록</a>
+			</li>
+			<li>
+		<a href="/web/admin/itemList">상품 목록</a>
+			</li>
+		<li>
+		<a href="/web/admin/order">주문 관리</a>	
+		  </li>
+		  	<li>
+		  <a href="/web/member/logout">로그아웃</a>
+        	</li>
+        </c:if>
+
 </ul>
 </div>
 </nav>	
@@ -83,15 +102,6 @@
 
 
  
-<script>
-	function goPost(){
-	    var f = document.createElement('form');
-	    console.log("data : " + f);
-	    f.setAttribute('method', 'post');
-	    f.setAttribute('action', 'admin');
-	    document.body.appendChild(f);
-	    f.submit();
-	}
-</script>
+
 </body>
 </html>
