@@ -6,8 +6,6 @@ import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.shoppingmall.web.memberDto.MemberDto;
-
 @Repository
 public class MemberManageDaoImpl implements MemberManageDao{
 
@@ -15,26 +13,55 @@ public class MemberManageDaoImpl implements MemberManageDao{
 	private SqlSessionTemplate sqlSessionTemplate; 	
 	
 	@Override
-	public Collection<MemberDto> memberList() {
+	public Collection<MemberManageVo> memberList() {
 		
 		return sqlSessionTemplate.selectList("memberInfoAll");
 	}
 	
 	@Override
-	public Collection<MemberDto> memberSearchList(MemberSearchVo memberSearchVo){
+	public Collection<MemberManageVo> memberSearchList(MemberSearchVo memberSearchVo){
+		System.out.println("sql 값 : " + sqlSessionTemplate.selectList("memberSearch",memberSearchVo));
 		return sqlSessionTemplate.selectList("memberSearch",memberSearchVo);
 	}
 	
 	@Override
-	public void memberDelete(MemberDeleteVo id) {
+	public Collection<MemberDetailVo> memberDetailSub(MemberDetailVo memberDetailVo){
+		return sqlSessionTemplate.selectList("memberDetail_sub", memberDetailVo);
+	}
+
+	@Override
+	public Collection<MemberDetailVo> memberDetail(MemberDetailVo memberDetailVo) {
+		return sqlSessionTemplate.selectList("memberDetail",memberDetailVo);
+	}
+	
+	@Override
+	public void memberDelete(MemberDeleteVo memberCode) {
 		
-		sqlSessionTemplate.delete("memberDelete", id);
+		sqlSessionTemplate.delete("memberDelete", memberCode);
 	}
 	
 	@Override
 	public void itemRegister(ItemRegisterVo itemRegisterVo) {
-		
 		sqlSessionTemplate.insert("itemRegister", itemRegisterVo);
+	}
+	
+	@Override
+	public void itemAddOption(ItemAddListVo itemAddListVo) {
+		sqlSessionTemplate.insert("itemRegister_option",itemAddListVo);
+	}
+	
+	@Override
+	public int itemSizeCheck(String itemSize) {
+		
+		ItemCheckVo size = new ItemCheckVo();
+		size.setItemSize(itemSize);
+		
+		return sqlSessionTemplate.selectOne("itemSize", size);
+	}
+	
+	@Override
+	public Collection<ItemAddListVo> itemAddList(ItemAddListVo itemAddListVo){
+		return sqlSessionTemplate.selectList("itemAddList", itemAddListVo);
 	}
 	
 	@Override
@@ -55,22 +82,32 @@ public class MemberManageDaoImpl implements MemberManageDao{
 	
 	@Override
 	public void itemUpdate(ItemRegisterVo itemRegisterVo) {
-		sqlSessionTemplate.update("itemUpdate",itemRegisterVo);
+		sqlSessionTemplate.update("itemUpdate_1",itemRegisterVo);
+		sqlSessionTemplate.update("itemUpdate_2",itemRegisterVo);
 	}
 	
 	@Override
 	public int itemNameCheck(String itemName) {
 		
-		ItemNameCheckVo name = new ItemNameCheckVo();
+		ItemCheckVo name = new ItemCheckVo();
 		name.setItemName(itemName);
 		
 		return sqlSessionTemplate.selectOne("itemName", name);
 	}
 	
 	@Override
-	public void itemDelete(ItemDeleteVo itemName) {
+	public void itemOptionDelete(ItemDeleteVo itemDeleteVo) { 
+		sqlSessionTemplate.delete("itemDelete_option", itemDeleteVo);
+	}
 	
-		sqlSessionTemplate.delete("itemDelete", itemName);
+	@Override
+	public void itemDelete(ItemDeleteVo itemDeleteVo) {
+		sqlSessionTemplate.delete("itemDelete", itemDeleteVo);
+	}
+	
+	@Override
+	public int itemCount(ItemDeleteVo itemDeleteVo) {
+		return sqlSessionTemplate.selectOne("itemCount", itemDeleteVo);
 	}
 	
 	@Override

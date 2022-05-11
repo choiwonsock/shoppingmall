@@ -18,6 +18,8 @@ public interface MemberDao {
     
     // 닉네임 중복 체크
     public int NickCheck(String nickname);
+    // 이메일 중복 체크
+    public int emailCheck(String email);
 
 	//로그인
 	public MemberDto viewlogin(MemberDto memberDto);

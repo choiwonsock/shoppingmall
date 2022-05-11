@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class MemberDto {
-	private int num;
+	private Long num;
 	private String name;
 	private String id;
 	private String pw;
@@ -21,10 +21,10 @@ public class MemberDto {
 	private int admin;
 	private boolean useCokkie;
 	
-	public int getNum() {
+	public Long getNum() {
 		return num;
 	}
-	public void setNum(int num) {
+	public void setNum(Long num) {
 		this.num = num;
 	}
 	

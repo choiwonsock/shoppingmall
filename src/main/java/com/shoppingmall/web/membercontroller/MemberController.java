@@ -1,5 +1,8 @@
 package com.shoppingmall.web.membercontroller;
 
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
@@ -19,6 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.shoppingmall.web.memberDto.MemberDto;
 import com.shoppingmall.web.memberservice.LoginService;
 import com.shoppingmall.web.memberservice.MemberService;
+import com.shoppingmall.web.order.basket.BasketCommand;
 
 @Controller
 public class MemberController {
@@ -30,15 +34,25 @@ public class MemberController {
 	@Autowired
 	BCryptPasswordEncoder passEncoder;
 	//내정보 조회
-	@RequestMapping(value = "/member/readmypage/{id}", method = RequestMethod.GET)
-	public String readMypageGet(HttpSession session , Model model, @PathVariable String id) {
+	@RequestMapping(value = "/member/readmypage", method = RequestMethod.GET)
+	public String readMypageGet(HttpSession session , HttpServletRequest request, Model model) {
+		session = request.getSession(false);
+		MemberDto uservo = (MemberDto) session.getAttribute("loginuser");
 		
-		System.out.println("회원정보 보기" + id);
-		//메서드 호출
-		MemberDto memberDto = memberService.readMypage(id);	
-		//정보 저장후 페이지이동
-		model.addAttribute("readmypage", memberDto);
-		return "member/readmypage";
+		if(uservo == null) {
+			return "login";
+		}else {
+			//메서드 호출
+			MemberDto memberDto = memberService.readMypage(uservo.getId());
+			model.addAttribute("readmypage", memberDto);
+			//정보 저장후 페이지이동
+			return "member/readmypage";
+		}
+		
+		
+		
+		
+	
 	}
 	
 	//내정보 수정

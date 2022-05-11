@@ -13,6 +13,14 @@
 	<typeAliases>
 		<typeAlias alias="MemberDto" type="com.shoppingmall.web.memberDto.MemberDto"/>
 		<typeAlias alias="itemRegisterVo" type="com.shoppingmall.web.admin.model.ItemRegisterVo"/>
+		<typeAlias type="com.shoppingmall.web.order.basket.BasketVo" alias="basket"/>
+		<typeAlias type="com.shoppingmall.web.order.item.ItemVo" alias="item"/>
+		<typeAlias type="com.shoppingmall.web.order.item.BasketBuyVo" alias="basketbuy"/>
+		<typeAlias type="com.shoppingmall.web.order.item.ItemBuyVo" alias="itembuy"/>
+		<typeAlias alias="memberManageVo" type="com.shoppingmall.web.admin.model.MemberManageVo"/>
+		<typeAlias alias="memberDetailVo" type="com.shoppingmall.web.admin.model.MemberDetailVo"/>
+		<typeAlias alias="itemRegisterVo" type="com.shoppingmall.web.admin.model.ItemRegisterVo"/>
 	</typeAliases>
 
 </configuration>
+		

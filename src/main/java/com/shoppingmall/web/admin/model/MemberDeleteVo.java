@@ -1,24 +1,21 @@
 package com.shoppingmall.web.admin.model;
 
-import org.springframework.stereotype.Repository;
-
-//@Repository
 public class MemberDeleteVo {
 
 	private String id;
-//	private int memberCode;
+	private String admin;
 	
-//	public int getMemberCode() {
-//		return memberCode;
-//	}
-//	public void setMemberCode(int memberCode) {
-//		this.memberCode = memberCode;
-//	}
-	public String getid() {
+	public String getId() {
 		return id;
 	}
-	public void setid(String id) {
+	public void setId(String id) {
 		this.id = id;
+	}
+	public String getAdmin() {
+		return admin;
+	}
+	public void setAdmin(String admin) {
+		this.admin = admin;
 	}
 
 }

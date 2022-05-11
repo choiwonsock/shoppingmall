@@ -25,8 +25,6 @@ public class OrderDetailVo {
 	private String itemCateCode;
 	private String itemThumbImage;
 	
-	private int orderDetailsNum;
-	private int gdsNum;
 	private int cartStock;
 	
 	public String getOrderId() {
@@ -136,18 +134,6 @@ public class OrderDetailVo {
 	}
 	public void setItemThumbImage(String itemThumbImage) {
 		this.itemThumbImage = itemThumbImage;
-	}
-	public int getOrderDetailsNum() {
-		return orderDetailsNum;
-	}
-	public void setOrderDetailsNum(int orderDetailsNum) {
-		this.orderDetailsNum = orderDetailsNum;
-	}
-	public int getGdsNum() {
-		return gdsNum;
-	}
-	public void setGdsNum(int gdsNum) {
-		this.gdsNum = gdsNum;
 	}
 	public int getCartStock() {
 		return cartStock;

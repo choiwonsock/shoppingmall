@@ -6,161 +6,119 @@
 <head>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
 <meta charset="UTF-8">
-<link rel="stylesheet" href="<c:url value="/resources/css/bootstrap.min.css"/>">
-<link rel="stylesheet" href="<c:url value="/resources/css/bootstrap-theme.min.css"/>">
-<style>
-.user_image img{
-	margin: 10px 0;
-}
-.form-control{display:block;width:50%;}
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+<meta name="description" content="" />
+<meta name="author" content="" />
 
-.list{
-position: relative;
-margin-right: 50%;
-background: none;
-font-size: 20px;
-line-height: 5;
-top:30px;
-left:30px;
+<link href="https://cdn.jsdelivr.net/npm/simple-datatables@latest/dist/style.css" rel="stylesheet" />
+<link href="/web/resources/bootstrap/css/styles.css" rel="stylesheet" />
+        
+<script src="https://use.fontawesome.com/releases/v6.1.0/js/all.js" crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<style>
+.container-fluid h1{
+	text-align: center;
 }
-.info{
-position:relative;
-background: none;
-margin-right: 30%;
-top:-300px;
-left: 250px;
-}
-</style>
-<style class= "navbar_fixed_top">
-.top_gnb_area{
-	width: 100%;
-	height: 50px;
-	background-color: #f0f0f1;
-    position:relative;
-}
- 
-.top_gnb_area .list{
-    position: absolute;
-    top: 0px;
-    right: 0;
-    
-}
- 
-.top_gnb_area .listtop li{
-    list-style: none;    
-    float : left;
-    padding: 13px 15px 0 10px;
-    font-weight: 900;
-    cursor: pointer;
 </style>
 
 <title>관리자 회원 관리</title>
 </head>
-<body>
-<div class="container-fluid">
-<nav class="navbar_fixed_top"> 
-<div class = "top_gnb_area">
-
-	<a href = "/web/member/main">★석이네쇼핑몰★</a>
-	<ul class= "listtop">
-	<c:if test="${loginuser != null && admin == 1 }">
-   <li>
-  ${name}님 환영합니다.
- </li>
- 			<li>
-     		<a href="/web/admin/memberManage">회원 관리</a>
-			</li>
-			<li>
-		<a href="/web/admin/itemReg">상품 등록</a>
-			</li>
-			<li>
-		<a href="/web/admin/itemList">상품 목록</a>
-			</li>
-		<li>
-		<a href="/web/admin/order">주문 관리</a>	
-		  </li>
-		  	<li>
-		  <a href="/web/member/logout">로그아웃</a>
-        	</li>
-        </c:if>
-        </ul>
-      </div>
-      </nav>
-	<ul class="list">
-		<li><a href="/web/admin/memberManage">회원 관리</a></li>
-		<li><a href="/web/admin/itemReg">상품 등록</a></li>
-		<li><a href="/web/admin/itemList">상품 목록</a></li>
-		<li><a href="/web/admin/order">주문 관리</a></li>
-	</ul>
-	
-	<div class="info">
-	<h3>회원 관리</h3>
-	<table  class="table table-striped">
-		<tr>
-			<th>회원 번호</th><th>회원 이름</th><th>회원 아이디</th>
-			<th>회원 닉네임</th><th>회원 주소</th><th></th>
-		</tr>
-	<c:forEach var="list" items="${list}">
-		<tr>
-			<td>${list.num}</td>
-			<td>${list.name}</td>
-			<td>${list.id}</td>
-			<td>${list.nickname}</td>
-			<td>${list.address1}</td>
-			<td>
-				<button class="checkbtn" >회원 삭제</button>
-			</td>
-		</tr>	
-	</c:forEach>
-	</table>
-	
-	<form action="/web/admin/memberSearch" method="post">
-		<select name="select">
-		
-			<option value="NUM">회원 번호</option>
-			<option value="NAME">회원 이름</option>
-			<option value="ID">회원 아이디</option>
-		</select>
-		<input type="text" name="search"/>
-		<input type="submit" value="검색">
-	</form>
+<body class="sb-nav-fixed">
+	<nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+		<!-- Navbar Brand-->
+		<a class="navbar-brand ps-3" href="index.html">ShoppingMall</a>
+		<!-- Sidebar Toggle-->
+		<button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
+	</nav>
+	<div id="layoutSidenav">
+		<div id="layoutSidenav_nav">
+			<nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+				<div class="sb-sidenav-menu">
+					<div class="nav">
+						<div class="sb-sidenav-menu-heading">Menu</div>
+						<a class="nav-link" href="" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
+							<div class="sb-nav-link-icon"><i class="fas fa-home"></i></div>
+							메인으로
+							<div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>	
+						</a>
+						<div class="collapse" id="collapseLayouts" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+							<nav class="sb-sidenav-menu-nested nav">
+								<a class="nav-link" href="/web/admin">관리자 페이지</a>
+								<a class="nav-link" href="/web/member/main">일반 페이지</a>
+							</nav>
+						</div>
+                        <a class="nav-link collapsed" href="/web/admin/memberManage">
+                        	<div class="sb-nav-link-icon"><i class="fas fa-user"></i></div>
+							회원 관리
+						</a>
+                        <a class="nav-link collapsed" href="/web/admin/itemReg">
+                        	<div class="sb-nav-link-icon"><i class="fas fa-file-alt"></i></div>
+							상품 등록
+						</a>
+                        <a class="nav-link collapsed" href="/web/admin/itemList">
+							<div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
+							상품 목록
+						</a>
+						<a class="nav-link collapsed" href="/web/admin/order">
+							<div class="sb-nav-link-icon"><i class="fas fa-shopping-cart"></i></div>
+							주문 관리
+						</a>           
+					</div> 
+				</div>
+				<div class="sb-sidenav-footer">
+					<div class="small">Logged in as:</div>
+                        Start Bootstrap
+				</div>
+			</nav>
+		</div>
+		<div id="layoutSidenav_content">
+			<main>
+				<div class="container-fluid px-4">
+         			<h1 class="mt-4">회원 목록</h1>
+		     		<div class="card mb-4"> 
+             			<div class="card-header">
+							<i class="fas fa-user"></i>
+							Member list
+						</div>
+						<div class="card-body">
+							<table id="datatablesSimple">
+								<thead>
+									<tr>
+										<th>회원 코드</th>
+										<th>회원 이름</th>
+										<th>회원 아이디</th>
+										<th>회원 닉네임</th>
+										<th>회원 주소</th>
+									</tr> 
+								</thead>
+								<tbody>
+									<c:forEach var="list" items="${list}">
+										<tr>
+											<td><a href="/web/admin/memberDetail/${list.id}">${list.num}</a></td>
+											<td>${list.name}</td>
+											<td>${list.id}</td>
+											<td>${list.nickName}</td>
+											<td>${list.address1} ${list.address2}</td>
+										</tr>	
+									</c:forEach>
+								</tbody>
+							</table>
+						</div>
+					</div>                   
+				</div>
+			</main>
+		</div>
 	</div>
-</div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<script src="/web/resources/bootstrap/js/scripts.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+<script src="/web/resources/bootstrap/assets/demo/chart-area-demo.js"></script>
+<script src="/web/resources/bootstrap/assets/demo/chart-bar-demo.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/simple-datatables@latest" crossorigin="anonymous"></script>
+<script src="/web/resources/bootstrap/js/datatables-simple-demo.js"></script>
 </body>
-<script>
-$(".checkbtn").click(function(){ 
-	var rlt = confirm('삭제하시겠습니까?')
-	
-	if(rlt){
-	var checkbtn = $(this)
-	var tr = checkbtn.parent().parent()
-	var td = tr.children();
-	
-	console.log("memberid tr : " + tr.text());
-	console.log("memberid td : " + td.eq(1).text());
-	
-	$.ajax({
-		url:"memberDelete",
-		data : {'id': td.eq(2).text()},
-		datatype: 'json',
-		success: function (data) {
-			console.log("data : " + data);
-			if(data == 1){
-				console.log(data)
-				alert("회원이 삭제되었습니다.")
-				location.reload(true)
-			}else if(data == 0){
-				console.log(data)
-				alert("회원을 다시 확인해주세요.")
-			}
-		}
-	});
-	}else{
-		return false;	
-	}
-});
-</script>
-
 </html>
 
 

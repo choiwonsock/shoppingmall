@@ -1,7 +1,7 @@
 package com.shoppingmall.web.admin.model;
 
 public class ItemRegisterVo {
-
+	
 	private String itemCode;
 	private Long itemPrice;
 	private String itemSize;
@@ -11,7 +11,7 @@ public class ItemRegisterVo {
 	private String itemImage;
 	private String itemCateCode;
 	private String itemThumbImage;
-				   	
+	
 	public String getItemCode() {
 		return itemCode;
 	}

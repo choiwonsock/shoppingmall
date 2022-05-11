@@ -39,6 +39,13 @@ public class MemberDaoImpl implements MemberDao {
         int cnt = sql.selectOne(namespace+".NickCheck", nickname);
         return cnt;
     }
+    
+    // 이메일 중복 체크
+    @Override
+    public int emailCheck(String email) {
+        int cnt = sql.selectOne(namespace+".emailCheck", email);
+        return cnt;
+    }
 	
 	//로그인
 	@Override

@@ -6,6 +6,8 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
+import com.shoppingmall.web.memberDto.MemberDto;
+
 
 
 public class AdminInterceptor extends HandlerInterceptorAdapter {
@@ -15,15 +17,23 @@ public class AdminInterceptor extends HandlerInterceptorAdapter {
 	    HttpServletResponse res, Object obj) throws Exception {
 	  
 	  HttpSession session = req.getSession();
-	  int member = (int)session.getAttribute("admin");
-	  
-	  System.out.println("member:" +member);
-	  if(member != 1) {
-		  
-	   res.sendRedirect("/web/");
-	   return false;
+	String login = (String)session.getAttribute("name");
+	
+	 if(login == null) {
+		 res.sendRedirect("/web/");
+		   return false;  
 	  }
-	  
+	 
+	 int member = (int)session.getAttribute("admin");
+	
+	  System.out.println("member:" +member);
+
+	if(member != 1) {
+		  
+		  res.sendRedirect("/web/");
+		   return false;  
+	  }
+	
 	  return true;
 	 }
 }

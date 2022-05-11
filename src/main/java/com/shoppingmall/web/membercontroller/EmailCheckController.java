@@ -12,13 +12,19 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.shoppingmall.web.memberservice.EmailCheckService;
 
 @Controller
 public class EmailCheckController {
 	private static final Logger logger = LoggerFactory.getLogger(EmailCheckController.class);
 	@Autowired
     private JavaMailSender mailSender;
+	@Autowired
+    private EmailCheckService emailCheckService;
+	
 	
 	/* 이메일 인증 */
     @RequestMapping(value="/member/mailCheck", method=RequestMethod.GET)
@@ -35,7 +41,7 @@ public class EmailCheckController {
         logger.info("인증번호 : " + checkNum);
         
         /* 이메일 보내기 */
-        String setmail = "james5233@naver.com";//root.context 에 사용한 이메일
+        String setmail = "james523311@gmail.com";//root.context 에 사용한 이메일
         String toMail = email;     //뷰로부터 받은 이메일주소 변수 사용
         String title = "(최원석 쇼핑몰)회원가입 인증 이메일 입니다."; //이메일 제목
         String content =         //내용
@@ -60,6 +66,20 @@ public class EmailCheckController {
         } 
         String num = Integer.toString(checkNum);
         return num;
+    }
+    
+    // 이메일 체크
+    @RequestMapping(value = "/member/emailCheck", method = RequestMethod.POST)
+    @ResponseBody
+    public String emailCheck(@RequestParam("email") String email) throws Exception{
+    
+        logger.info("useremailCheck 진입");
+        logger.info("전달받은 email:"+ email);
+        int cnt = emailCheckService.emailCheck(email);
+      
+        logger.info("확인 결과:"+cnt);
+        
+        return Integer.toString(cnt);
     }
     
 }

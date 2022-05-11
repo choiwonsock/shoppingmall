@@ -1,9 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+ <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html>
 <html>
 <head>
+<link rel="stylesheet" type="text/css" href="../resources/css/login.css">
 <style>
 .form-label-group {
 	position: relative;
@@ -24,46 +25,118 @@
 
 </style>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>아이디 찾기</title>
 </head>
+
 <body>
-	<form method="post" action="find_pw" name="findpw" class="find">
-<div class="form-label-group">
-		<label for="id">ID :</label>
-			<input type="text" id="id" name="id" class="form-control"/>
-			
-		</div>
+  <div class="login-root">
+    <div class="box-root flex-flex flex-direction--column" style="min-height: 100vh;flex-grow: 1;">
+      <div class="loginbackground box-background--white padding-top--64">
+        <div class="loginbackground-gridContainer">
+          <div class="box-root flex-flex" style="grid-area: top / start / 8 / end;">
+            <div class="box-root" style="background-image: linear-gradient(white 0%, rgb(247, 250, 252) 33%); flex-grow: 1;">
+            </div>
+          </div>
+          <div class="box-root flex-flex" style="grid-area: 4 / 2 / auto / 5;">
+            <div class="box-root box-divider--light-all-2 animationLeftRight tans3s" style="flex-grow: 1;"></div>
+          </div>
+          <div class="box-root flex-flex" style="grid-area: 6 / start / auto / 2;">
+            <div class="box-root box-background--blue800" style="flex-grow: 1;"></div>
+          </div>
+          <div class="box-root flex-flex" style="grid-area: 7 / start / auto / 4;">
+            <div class="box-root box-background--blue animationLeftRight" style="flex-grow: 1;"></div>
+          </div>
+          <div class="box-root flex-flex" style="grid-area: 8 / 4 / auto / 6;">
+            <div class="box-root box-background--gray100 animationLeftRight tans3s" style="flex-grow: 1;"></div>
+          </div>
+          <div class="box-root flex-flex" style="grid-area: 2 / 15 / auto / end;">
+            <div class="box-root box-background--cyan200 animationRightLeft tans4s" style="flex-grow: 1;"></div>
+          </div>
+          <div class="box-root flex-flex" style="grid-area: 3 / 14 / auto / end;">
+            <div class="box-root box-background--blue animationRightLeft" style="flex-grow: 1;"></div>
+          </div>
+          <div class="box-root flex-flex" style="grid-area: 4 / 17 / auto / 20;">
+            <div class="box-root box-background--gray100 animationRightLeft tans4s" style="flex-grow: 1;"></div>
+          </div>
+          <div class="box-root flex-flex" style="grid-area: 5 / 14 / auto / 17;">
+            <div class="box-root box-divider--light-all-2 animationRightLeft tans3s" style="flex-grow: 1;"></div>
+          </div>
+        </div>
+      </div>
+      <div class="box-root padding-top--24 flex-flex flex-direction--column" style="flex-grow: 1; z-index: 9;">
+        <div class="box-root padding-top--48 padding-bottom--24 flex-flex flex-justifyContent--center">
+          <h1><a href="http://blog.stackfindover.com/" rel="dofollow">비밀번호 찾기</a></h1>
+        </div>
+        <div class="formbg-outer">
+          <div class="formbg">
+            <div class="formbg-inner padding-horizontal--48">
+              <span class="padding-bottom--15"></span>
+              
+              <form method="post" action="find_pw" name="findpw" class="find"> 
+		 
+		  <div class="field padding-bottom--24">
+                  <label for="name">아이디 </label>
 		
-		<div class="form-label-group">
-		<label for="name">이름 : </label>
-			<input type="text" id="name" name="name"/>
-			
-		</div>
+                  <input type="text" id="id" name="id" />
+                </div>
+
+                <div class="field padding-bottom--24">
+                  <label for="name">이름 </label>
 		
-		<div class="form-label-group">
-		<label for="email">이메일 :</label>
-			
-			<input type="text" class="email_input" id="email" name="email"/>
-			<input type="button" onclick = "emailCheck()" value="인증번호 전송"><br>
-			<span class="clear_ok">이메일이 전송 되었습니다. 이메일을 확인해주세요.</span>
+                  <input type="text" id="name" name="name" />
+                </div>
+
+                <div class="field padding-bottom--24">
+                  <div class="grid--50-50">
+                    <label for="email">이메일 :</label>
+                   
+                  </div>
+                  <input type="text" id="email" name="email" /> 
+		<input type="button" class = "email_check_button" 
+		onclick = "emailCheck()" value="인증번호 전송"><br>
+		<span class="clear_ok">이메일이 전송 되었습니다. 이메일을 확인해주세요.</span>
  			<span class="clear_already">올바르지 못한 이메일 형식입니다.</span>
-			
-			<div class="email_check_input_box" id = "email_check_input_box_false">
-			<input type="text" class="email_check_input" id="emailch" name="emailch" disabled="disabled">	
+                </div>
+		<div class="email_check_input_box" id = "email_check_input_box_false">
+			 <div class="field padding-bottom--24">
+			<input type="text" class="email_check_input" id="emailch" name="emailch" disabled="disabled" placeholder="인증번호 입력">	
 				<div class="clearfix"></div>
  	 					<span id = "email_check_input_box_warn"></span>
  	 			</div>
-			</div>
-		<div class="form-label-group">
-			<input class="button"
-				type="button" value="비밀번호 찾기">
-		</div>
+ 	 			</div>
+		
+                <div class="field field-checkbox padding-bottom--24 flex-flex align-center">
+                  
+                </div>
+                <div class="field padding-bottom--24">
+                 <input class="submit" 
+				type="submit" value="비밀번호찾기">
+                </div>
+		
 
-	
-
-	</form>
-	
-	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+                <div class="field">
+                  
+                </div>
+              </form>
+            </div>
+          </div>
+          <div class="footer-link padding-top--24">
+            <span>Don't have an account? <a href="">Sign up</a></span>
+            <div class="listing padding-top--24 padding-bottom--24 flex-flex center-center">
+              <span><a href="#">© Stackfindover</a></span>
+              <span><a href="#">Contact</a></span>
+              <span><a href="#">Privacy & terms</a></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <c:if test="${check == 1}">
+			<label>일치하는 정보가 존재하지 않습니다.</label>
+			<a href="/web/member/find_pw_form"><input type="button" value="다시 입력" /></a>
+		</c:if>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
  <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
  <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
  
@@ -71,12 +144,12 @@
 	  <script type="text/javascript" >
 	  var buttonCheck="";
       $(document).ready(function(){
-    	  $(".button").on("click", function(){
+    	  $(".submit").on("click", function(){
     		 	
     		  if($("#id").val()==""){
 					alert("아이디를 입력해주세요.");
 					$("#id").focus();
-					buttonCheck = false;
+					return false;
 				}else{
 					buttonCheck = true;
 				}
@@ -84,14 +157,14 @@
     		  if($("#name").val()==""){
 					alert("이름를 입력해주세요.");
 					$("#name").focus();
-					buttonCheck = false;
+					return false;
 				}else{
 					buttonCheck = true;
 				}
     		  if($("#email").val()==""){
 					alert("이메일을 입력해주세요.");
 					$("#email").focus();
-					buttonCheck = false;
+					return false;
 				}else{
 					buttonCheck = true;
 				}
@@ -99,7 +172,7 @@
 
     		  if($("#emailch").val()==""){
 					alert("인증번호를 입력해주세요");
-					buttonCheck = false;
+					return false;
 				}else{
 					buttonCheck = true;
 				}
@@ -124,7 +197,7 @@ function emailFormCheck(email){
 	
 	
 function emailCheck() {
-	var email = $(".email_input").val(); //입력한 이메일
+	var email = $("#email").val(); //입력한 이메일
 	 var checkBox = $(".email_check_input");        // 인증번호 입력란
 	 var boxWrap = $(".email_check_input_box"); // 인증번호 입력란 박스
 
@@ -177,7 +250,7 @@ $(".email_check_input").blur(function(){
 
 //회원가입 버튼(회원가입 기능 작동)
 
-$(".button").click(function(){
+$(".submit").click(function(){
     if(emailnumCheck == true && buttonCheck == true){
     	
 	 $(".find").submit();
@@ -186,4 +259,5 @@ $(".button").click(function(){
 });
 </script>
 </body>
+
 </html>

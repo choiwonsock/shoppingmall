@@ -18,6 +18,11 @@
         SELECT COUNT(nickname) FROM MEMBER WHERE nickname= #{nickname}
     </select> 
     
+      <!-- 이메일 중복 체크  -->
+    <select id="emailCheck" parameterType="String" resultType="Integer">
+        SELECT COUNT(email) FROM MEMBER WHERE email= #{email}
+    </select> 
+    
    <!--로그인-->
    <select id = "login" resultType="com.shoppingmall.web.memberDto.MemberDto"  >
    SELECT NAME FROM MEMBER WHERE ID = #{id} AND PW = #{pw}
@@ -62,73 +67,63 @@
 	 	delete from MEMBER where id = #{id} 
 	 </delete>
 	 
-	<!-- 기룡이형 -->
-	<select id="memberInfoAll" resultType="MemberDto">
-	select * from MEMBER order by id
-</select>
-	
-<select id="memberSearch" resultType="MemberDto">
-	select * from MEMBER where ${select} like '%'||'${search}'||'%' order by id
-</select>
 
-<delete id="memberDelete">
-	delete from MEMBER where id = '${id}' 
-</delete>
+<!-- 환수 -->
+	<insert id="basketinsert" parameterType="basket">
+		insert into "BASKET" ("KARTNUM", "USERNUM", "ITEMCODE", "ITEMQTY")
+		values (#{kartnum}, #{usernum}, #{itemcode}, #{itemqty})
+	</insert>
 
-<insert id="itemRegister">
-	insert into ITEM (ITEMCODE, ITEMPRICE, ITEMSIZE, ITEMNAME, ITEMDESC, ITEMQTY, ITEMCATECODE, ITEMIMAGE, ITEMTHUMBIMAGE)
-	values ('${itemCode}', ${itemPrice}, '${itemSize}', '${itemName}', '${itemDesc}', '${itemQty}', ${itemCateCode}, '${itemImage}', '${itemThumbImage}')
-</insert>
-
-<select id="itemList" resultType="itemRegisterVo">
-	select * from ITEM order by ITEMCODE
-</select>
-
-<select id="itemSearch" resultType="itemRegisterVo">
-	select * from ITEM where ${select} like '%'||'${search}'||'%' order by ITEMCODE
-</select>
-
-<update id="itemUpdate">
-	update ITEM set ITEMPRICE = ${itemPrice}, ITEMSIZE ='${itemSize}', ITEMNAME='${itemName}', ITEMDESC='${itemDesc}', ITEMQTY='${itemQty}', ITEMIMAGE='${itemImage}', ITEMTHUMBIMAGE='${itemThumbImage}' 
-		where ITEMCODE = '${itemCode}'
-</update>
-
-<select id="itemDetail" resultType="itemRegisterVo">
-	select * from ITEM where ITEMCODE = ${itemCode}
-</select>
-
-<select id="itemName" resultType="Integer">
-	select count(*) ITEMNAME from ITEM where ITEMNAME = '${itemName}'
-</select>
-
-<delete id="itemDelete">
-	delete from ITEM where ITEMNAME = '${itemName}' 
-</delete>
-
-<select id="orderList" resultType="com.shoppingmall.web.admin.model.OrderListVo">
- 	select * from tbl_order 
-</select>
-
-<select id="orderDetail" resultType="com.shoppingmall.web.admin.model.OrderDetailVo">
- 	select * from tbl_order o 
- 		inner join tbl_order_details d 
- 			on o.orderid = d.orderid
- 		inner join item i 
- 			on i.itemcode = d.gdsnum
- 			where o.orderid = '${orderId}'
-</select>
-
-<update id="orderDelivery">
-	update tbl_order set delivery = '${delivery}' where orderid = '${orderId}'  
-</update>
-
-<select id="orderQtyChange_sub" resultType="com.shoppingmall.web.admin.model.OrderDetailVo">
- 	select gdsnum, cartstock from tbl_order_details where orderid = '${orderId}'
-</select>
-
-<update id="orderQtyChange">
-	update ITEM set ITEMQTY = ITEMQTY ${delivery} '${cartStock}' where ITEMCODE = '${gdsNum}'  
-</update>
-
-	 
+	<select id="basketselect" parameterType="Long"
+		resultType="basket">
+		select * from "BASKET" where "USERNUM"=#{usernum}
+	</select>
+	<select id="basketList" parameterType="Long" resultType="item">
+		select *
+		from "ITEM" where "ITEMCODE"=#{itemcode}
+	</select>
+	<select id="buycount" resultType="Long">
+		select count(*) from "ITEMBUY"
+	</select>
+	<insert id="basketbuyinsert" parameterType="basketbuy">
+		insert into "TBL_ORDER" ("ORDERID", "USERID", "KARTNUM", "ITEMQTY", "ITEMCODE")
+		values (#{orderid}, #{userid}, #{kartnum}, #{itemqty}, #{itemcode})
+	</insert>
+	<insert id="itembuyinsert" parameterType="itembuy">
+		insert into "TBL_ORDER" ("ORDERID", "USERID", "ITEMCODE", "ITEMQTY")
+		values (#{orderid}, #{userid}, #{itemcode}, #{itemqty})
+	</insert>
+	<delete id="basketdelete" parameterType="Long">
+		delete from "BASKET"
+		where "KARTNUM"=#{kartnum}
+	</delete>
+	<delete id="itemdelete" parameterType="Long">
+		delete from "BASKET" where
+		"ORDERID"=#{orderid}
+	</delete>
+	<select id="search" parameterType="HashMap" resultType="item">
+		select *
+		from "ITEM" where "ITEMCATECODE"=#{itemcatecode} and "ITEMNAME" like
+		'%'||#{search}||'%'
+	</select>
+	<select id="searchAll" parameterType="String" resultType="item">
+		select
+		* from "ITEM" where "ITEMNAME" like '%'||#{itemname}||'%'
+	</select>
+	<update id="plus" parameterType="Long">
+		update "BASKET" set
+		"ITEMQTY"=ITEMQTY +1 where "KARTNUM"=#{kartnum}
+	</update>
+	<update id="mius" parameterType="Long">
+		update "BASKET" set
+		"ITEMQTY"=ITEMQTY -1 where "KARTNUM"=#{kartnum}
+	</update>
+	<select id="basSelect" parameterType="Long" resultType="basket">
+		select *
+		from "BASKET" where "KARTNUM"=#{kartnum}
+	</select>
+	<update id="address" parameterType="basketbuy">
+		update "TBL_ORDER" set
+		"USERADDR1"=#{useraddr1}, "ORDERINFO"=#{orderinfo},"ORDERPHON"=#{orderphon} where "KARTNUM"=#{kartnum}
+	</update>
 </mapper>

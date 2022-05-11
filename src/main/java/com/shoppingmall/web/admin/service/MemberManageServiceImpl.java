@@ -1,6 +1,8 @@
 package com.shoppingmall.web.admin.service;
 
 import java.io.File;
+import java.text.DecimalFormat;
+import java.util.Calendar;
 import java.util.Collection;
 import java.util.List;
 
@@ -10,15 +12,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.shoppingmall.web.admin.model.ItemAddListVo;
 import com.shoppingmall.web.admin.model.ItemDeleteVo;
 import com.shoppingmall.web.admin.model.ItemRegisterVo;
 import com.shoppingmall.web.admin.model.MemberDeleteVo;
+import com.shoppingmall.web.admin.model.MemberDetailVo;
 import com.shoppingmall.web.admin.model.MemberManageDaoImpl;
+import com.shoppingmall.web.admin.model.MemberManageVo;
 import com.shoppingmall.web.admin.model.MemberSearchVo;
 import com.shoppingmall.web.admin.model.OrderDetailVo;
 import com.shoppingmall.web.admin.model.OrderListVo;
 import com.shoppingmall.web.admin.utils.UploadFileUtils;
-import com.shoppingmall.web.memberDto.MemberDto;
 
 @Repository
 public class MemberManageServiceImpl implements MemberManageService{
@@ -29,21 +33,28 @@ public class MemberManageServiceImpl implements MemberManageService{
 	private String uploadPath;
 	
 	@Override
-	public Collection<MemberDto> memberAllList() {
+	public Collection<MemberManageVo> memberAllList() {
 		return memberManageDaoImpl.memberList();
 	}
 	
 	@Override
-	public Collection<MemberDto> memberSearchList(MemberSearchVo memberSearchVo){
+	public Collection<MemberManageVo> memberSearchList(MemberSearchVo memberSearchVo){
 		return memberManageDaoImpl.memberSearchList(memberSearchVo);
+	}
+
+	@Override
+	public Collection<MemberDetailVo> memberDetailSub(MemberDetailVo memberDetailVo) {
+		return memberManageDaoImpl.memberDetailSub(memberDetailVo);
 	}
 	
 	@Override
-	public void memberDelete(String id) {
-		
-		MemberDeleteVo memberDeleteVo = new MemberDeleteVo();
-		memberDeleteVo.setid(id);
-		
+	public Collection<MemberDetailVo> memberDetail(MemberDetailVo memberDetailVo) {
+		return memberManageDaoImpl.memberDetail(memberDetailVo);
+	}
+	
+	@Override
+	public void memberDelete(MemberDeleteVo memberDeleteVo) {
+	
 		memberManageDaoImpl.memberDelete(memberDeleteVo);
 	}
 	
@@ -62,8 +73,20 @@ public class MemberManageServiceImpl implements MemberManageService{
 			fileName = uploadPath + File.separator + "images" + File.separator + "none.png";
 		}
 		
+		Calendar cal = Calendar.getInstance();
+		int year = cal.get(Calendar.YEAR);
+		String ym = year + new DecimalFormat("00").format(cal.get(Calendar.MONTH) + 1);
+		String ymd = ym +  new DecimalFormat("00").format(cal.get(Calendar.DATE));
+		String cateCode = itemRegisterVo.getItemCateCode();
+		String subNum = "";
+		for(int i = 1; i <= 6; i ++) {
+			subNum += (int)(Math.random() * 10);
+		}
+		
+		String itemCode = ymd + cateCode + subNum;
+		
+		itemRegisterVo.setItemCode(itemCode);
 		itemRegisterVo.setItemImage("imgUpload" + ymdPath + File.separator + fileName);
-		System.out.println("이름 확인 : " + itemRegisterVo.getItemImage());
 		itemRegisterVo.setItemThumbImage("imgUpload" + ymdPath + File.separator + "s" + File.separator + "s_" + fileName);
 		memberManageDaoImpl.itemRegister(itemRegisterVo);
 		
@@ -72,6 +95,21 @@ public class MemberManageServiceImpl implements MemberManageService{
 			System.out.println("등록 오류");
 		}
 		
+	}
+	
+	@Override
+	public void itemAddOption(ItemAddListVo itemAddListVo) {
+		memberManageDaoImpl.itemAddOption(itemAddListVo);
+	}
+	
+	@Override
+	public Collection<ItemAddListVo> itemAddList(ItemAddListVo itemAddListVo){
+		return memberManageDaoImpl.itemAddList(itemAddListVo);
+	}
+	
+	@Override
+	public int itemSizeCheck(String itemSize){
+		return memberManageDaoImpl.itemSizeCheck(itemSize);
 	}
 	
 	@Override
@@ -85,20 +123,20 @@ public class MemberManageServiceImpl implements MemberManageService{
 	}
 	
 	@Override
-	public Collection<ItemRegisterVo> itemDetail(String itemCode){
-		ItemRegisterVo itemRegisterVo = new ItemRegisterVo();
-		itemRegisterVo.setItemCode(itemCode);
+	public Collection<ItemRegisterVo> itemDetail(ItemRegisterVo itemRegisterVo){
 		return memberManageDaoImpl.itemDetail(itemRegisterVo);
 	}
 	
 	@Override
 	public void itemUpdate(ItemRegisterVo itemRegisterVo, MultipartFile file) throws Exception {
+			
 		
 		if(file.getOriginalFilename() != "") {
 			
 			File delFile = new File("C:/image/"+itemRegisterVo.getItemImage());
 			File delThumbFile = new File("C:/image/"+itemRegisterVo.getItemThumbImage());
 			if(delFile.exists() && delThumbFile.exists()) {
+				
 				delFile.delete();
 				delThumbFile.delete();
 			}
@@ -109,7 +147,6 @@ public class MemberManageServiceImpl implements MemberManageService{
 
 			fileName = UploadFileUtils.fileUpload(imgUploadPath, file.getOriginalFilename(), file.getBytes(), ymdPath);	
 			itemRegisterVo.setItemImage("imgUpload" + ymdPath + File.separator + fileName);
-			System.out.println("이름 확인 : " + itemRegisterVo.getItemImage());
 			itemRegisterVo.setItemThumbImage("imgUpload" + ymdPath + File.separator + "s" + File.separator + "s_" + fileName);
 			
 			memberManageDaoImpl.itemUpdate(itemRegisterVo);
@@ -125,12 +162,21 @@ public class MemberManageServiceImpl implements MemberManageService{
 	}
 	
 	@Override
-	public void itemDelete(String itemName) {
+	public void itemDelete(ItemDeleteVo itemDeleteVo) {
 		
-		ItemDeleteVo itemDeleteVo = new ItemDeleteVo();
-		itemDeleteVo.setItemName(itemName);
-
-		memberManageDaoImpl.itemDelete(itemDeleteVo);
+		int num = memberManageDaoImpl.itemCount(itemDeleteVo);
+		System.out.println("num : " + num);
+		if(num > 1) {
+			memberManageDaoImpl.itemOptionDelete(itemDeleteVo);
+		}else if(num <= 1) {
+			File delFile = new File("C:/image/"+itemDeleteVo.getItemImage());
+			File delThumbFile = new File("C:/image/"+itemDeleteVo.getItemThumbImage());			
+			delFile.delete();
+			delThumbFile.delete();
+			
+			memberManageDaoImpl.itemDelete(itemDeleteVo);
+			memberManageDaoImpl.itemOptionDelete(itemDeleteVo);
+		}
 	}
 	
 	@Override
@@ -159,11 +205,13 @@ public class MemberManageServiceImpl implements MemberManageService{
 		OrderDetailVo change = new OrderDetailVo();
 		
 		for(OrderDetailVo i : list) {
-			change.setGdsNum(i.getGdsNum());
+			change.setItemCode(i.getItemCode());
 			change.setCartStock(i.getCartStock());
+			change.setItemSize(i.getItemSize());
 			change.setDelivery(orderDetailVo.getDelivery());
 			memberManageDaoImpl.orderQtyChange(change);
 		}
+//		memberManageDaoImpl.orderQtyChange(orderDetailVo);
 	}
 }
 
